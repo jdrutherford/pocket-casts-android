@@ -17,24 +17,26 @@ class InputControlPlayback @JvmOverloads constructor(
     @field:TaskerInputField("playbackSpeed") var playbackSpeed: String? = null,
     @field:TaskerInputField("trimSilenceMode") var trimSilenceMode: String? = null,
     @field:TaskerInputField("volumeBoostEnabled") var volumeBoostEnabled: String? = null,
+    @field:TaskerInputField("sleepTimerMinutes") var sleepTimerMinutes: String? = null, // Added sleepTimerMinutes
 ) {
 
     val commandEnum get() = tryOrNull { command?.let { PlaybackCommand.valueOf(it) } }
     val trimSilenceModeEnum get() = tryOrNull { trimSilenceMode?.let { TrimMode.valueOf(it) } }
-enum class PlaybackCommand(@StringRes val descriptionResId: Int) {
-    PlayNextInQueue(R.string.play_next_in_queue),
-    SkipForward(R.string.skip_forward),
-    SkipBack(R.string.skip_back),
-    SkipToNextChapter(R.string.skip_to_next_chapter),
-    SkipToPreviousChapter(R.string.skip_to_previous_chapter),
-    SkipToChapter(R.string.skip_to_chapter),
-    SkipToTime(R.string.skip_to_time),
-    SetPlaybackSpeed(R.string.set_playback_speed),
-    SetTrimSilenceMode(R.string.set_trim_silence_mode),
-    SetVolumeBoost(R.string.set_volume_boost),
-    SleepTimer(R.string.sleep_timer_minutes), // Added SleepTimer command
-    ;
 
-    fun getDescription(context: Context) = context.getString(descriptionResId)
-}
+    enum class PlaybackCommand(@StringRes val descriptionResId: Int) {
+        PlayNextInQueue(R.string.play_next_in_queue),
+        SkipForward(R.string.skip_forward),
+        SkipBack(R.string.skip_back),
+        SkipToNextChapter(R.string.skip_to_next_chapter),
+        SkipToPreviousChapter(R.string.skip_to_previous_chapter),
+        SkipToChapter(R.string.skip_to_chapter),
+        SkipToTime(R.string.skip_to_time),
+        SetPlaybackSpeed(R.string.set_playback_speed),
+        SetTrimSilenceMode(R.string.set_trim_silence_mode),
+        SetVolumeBoost(R.string.set_volume_boost),
+        SleepTimer(R.string.sleep_timer_minutes), // Added SleepTimer command
+        ;
+
+        fun getDescription(context: Context) = context.getString(descriptionResId)
+    }
 }
