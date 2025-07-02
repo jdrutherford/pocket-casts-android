@@ -245,5 +245,45 @@ class OpmlUrlReaderTest {
         assertEquals(listOf("https://feeds.simplecast.com?key=\""), urls)
     }
 
+    @Test
+    fun `file scheme url`() {
+        val input = "<outline xmlUrl='file:///storage/emulated/0/podcasts/podcast.rss' />".asSource()
+
+        val urls = reader.readUrls(input)
+
+        assertEquals(listOf("file:///storage/emulated/0/podcasts/podcast.rss"), urls)
+    }
+
+    @Test
+    fun `mixed http and file scheme urls`() {
+        val input = """
+            |<outline xmlUrl="https://feeds.simplecast.com/1" />
+            |<outline xmlUrl="file:///storage/emulated/0/podcasts/podcast.rss" />
+            |<outline xmlUrl="https://feeds.megaphone.fm/1" />
+            |<outline xmlUrl="file:///internal/audio/local-podcast.xml" />
+        """.trimMargin().asSource()
+
+        val urls = reader.readUrls(input)
+
+        assertEquals(
+            listOf(
+                "https://feeds.simplecast.com/1",
+                "file:///storage/emulated/0/podcasts/podcast.rss",
+                "https://feeds.megaphone.fm/1",
+                "file:///internal/audio/local-podcast.xml",
+            ),
+            urls,
+        )
+    }
+
+    @Test
+    fun `invalid file scheme url`() {
+        val input = "<outline xmlUrl='file://' />".asSource()
+
+        val urls = reader.readUrls(input)
+
+        assertEquals(emptyList<String>(), urls)
+    }
+
     private fun String.asSource(): Source = Buffer().writeUtf8(this)
 }

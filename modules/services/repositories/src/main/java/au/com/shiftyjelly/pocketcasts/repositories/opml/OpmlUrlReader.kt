@@ -40,13 +40,28 @@ internal class OpmlUrlReader {
             return null
         }
 
-        return value.unescapeXmlEntities().takeIf { it.toHttpUrlOrNull() != null }
+        return value.unescapeXmlEntities().takeIf { it.isValidUrl() }
     }
 
     private fun String.unescapeXmlEntities(): String {
         return entitiesToChars.entries.fold(this) { text, (entitiy, replacement) ->
             text.replace(entitiy, replacement)
         }
+    }
+
+    private fun String.isValidUrl(): Boolean {
+        // First check if it's a valid HTTP URL (existing behavior)
+        if (toHttpUrlOrNull() != null) {
+            return true
+        }
+        
+        // Also accept file:// URLs
+        if (startsWith("file://")) {
+            // Basic validation for file URLs - just check they have the scheme and a path
+            return length > 7 // "file://" is 7 characters
+        }
+        
+        return false
     }
 
     private companion object {

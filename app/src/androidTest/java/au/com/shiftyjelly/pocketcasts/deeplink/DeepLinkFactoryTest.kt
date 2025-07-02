@@ -1061,6 +1061,17 @@ class DeepLinkFactoryTest {
     }
 
     @Test
+    fun podcastUrlFromFile() {
+        val intent = Intent()
+            .setAction(ACTION_VIEW)
+            .setData(Uri.parse("file:///storage/emulated/0/podcasts/podcast.rss"))
+
+        val deepLink = factory.create(intent)
+
+        assertEquals(ShowPodcastFromUrlDeepLink("file:///storage/emulated/0/podcasts/podcast.rss"), deepLink)
+    }
+
+    @Test
     fun playFromSearch() {
         val intent = Intent()
             .setAction(INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)
