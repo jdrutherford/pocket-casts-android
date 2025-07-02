@@ -686,7 +686,7 @@ private class PodcastUrlSchemeAdapter(
     }
 
     private companion object {
-        val ALLOWED_SCHEMES = listOf("rss", "feed", "pcast", "itpc", "http", "https")
+        val ALLOWED_SCHEMES = listOf("rss", "feed", "pcast", "itpc", "http", "https", "file")
 
         val EXCLUDED_HOSTS = listOf(
             "subscribe",
